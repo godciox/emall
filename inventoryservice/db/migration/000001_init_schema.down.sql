@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS stock_log;
+
+DROP TABLE IF EXISTS sku;

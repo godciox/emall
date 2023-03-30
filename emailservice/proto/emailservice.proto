@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package hipstershop;
+option go_package = "./proto;hipstershop";
+
+service EmailService {
+  rpc SendOrderConfirmation(SendOrderConfirmationRequest) returns (Empty) {}
+}
+
+message CartItem {
+  string product_id = 1;
+  int32 quantity = 2;
+}
+
+message OrderItem {
+  CartItem item = 1;
+  Money cost = 2;
+}
+
+
+message Empty {}
+
+message Address {
+  string street_address = 1;
+  string city = 2;
+  string state = 3;
+  string country = 4;
+  int32 zip_code = 5;
+}
+
+
+message Money {
+  // 以人民币元为单位
+  int64 unit = 1;
+
+}
+
+message OrderResult {
+  string order_id = 1;
+  string shipping_tracking_id = 2;
+  Money shipping_cost = 3;
+  Address shipping_address = 4;
+  repeated OrderItem items = 5;
+}
+
+message SendOrderConfirmationRequest {
+  string email = 1;
+  OrderResult order = 2;
+}
