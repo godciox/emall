@@ -7,12 +7,12 @@ import (
 
 // 加密密码
 func HashAndSalt(pwd []byte) string {
-	//hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
-	//if err != nil {
-	//	logger.Debug(err)
-	//}
-	//return string(hash)
-	return string(pwd)
+	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
+	if err != nil {
+		logger.Debug(err)
+	}
+	return string(hash)
+	//return string(pwd)
 }
 
 // 验证密码

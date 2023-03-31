@@ -54,9 +54,9 @@ type DownloadProductImageRequest struct {
 	ProductID int64 `form:"productId"`
 }
 
-func (this *DownloadProductImageController) Get() {
+func (this *DownloadProductImageController) Post() {
 	var req DownloadProductImageRequest
-	err := this.BindForm(&req)
+	err := this.ParseForm(&req)
 	fmt.Println(err)
 	imgs, err := db.DBStore.GetProductInfoImg(context.Background(), req.ProductID)
 	if len(imgs) == 0 || err != nil {
@@ -80,7 +80,7 @@ func (this *DownloadProductImageController) Get() {
 
 func (this *UploadController) Post() {
 	var req UploadProductImageRequest
-	this.BindForm(&req)
+	this.ParseForm(&req)
 	f, _, err := this.GetFile("product.png")
 
 	if f != nil {

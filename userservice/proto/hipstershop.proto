@@ -26,8 +26,8 @@ service CartService {
 }
 
 message CartItem {
-  string product_id = 1;
-  int32  quantity = 2;
+  int64 product_id = 1;
+  int64  quantity = 2;
 }
 
 message AddItemRequest {
@@ -57,22 +57,157 @@ service ProductCatalogService {
   rpc ListProducts(Empty) returns (ListProductsResponse) {}
   rpc GetProduct(GetProductRequest) returns (Product) {}
   rpc SearchProducts(SearchProductsRequest) returns (SearchProductsResponse) {}
+  rpc InsertProducts(InsertProductsRequest) returns (InsertProductsResponse) {}
+  rpc OperateProducts(OperateProductsRequest) returns (OperateProductsResponse) {}
+  rpc InsertCategory(InsertCategoryRequest) returns (InsertCategoryResponse) {}
+  rpc GetCategory(CategoryRequest) returns (CategoryResponse) {}
+  rpc DeleteCategory(CategoryRequest) returns (CategoryResponse) {}
+  rpc ChangeCategory(InsertCategoryRequest) returns (InsertCategoryRequest) {}
+  rpc GetProductImage(GetImageRequest) returns (GetImageResponse) {}
+  rpc InsertProductImage(ImageRequest) returns (ImageResponse) {}
+  rpc ChangeProductImage(ImageRequest) returns (ImageResponse) {}
+  rpc DeleteProductImage(DeleteImageRequest) returns (ImageResponse) {}
+  rpc GetBrand(GetBrandRequest) returns (GetBrandResponse) {}
+  rpc InsertBrand(BrandRequest) returns (BrandResponse) {}
+  rpc ChangeBrand(BrandRequest) returns (BrandRequest) {}
+  rpc DeleteBrand(DeleteBrandRequest) returns (BrandResponse) {}
+}
+
+message ProductImage {
+  string title = 1;
+  int64 product_id = 2;
+  string source_img = 3;
+  string thumbnail = 4;
+}
+
+message Brand {
+  string name = 1;
+  string logo_img_path = 2;
+  int64  product_categories_id = 3;
+}
+
+message  GetImageRequest {
+  int64 product_id = 1;
+}
+
+message GetImageResponse {
+  ImageResponse rsp = 1;
+  repeated ProductImage images = 2;
+}
+
+message ImageRequest {
+  repeated ProductImage images = 2;
+}
+
+message ImageResponse {
+  string status = 1;
+  string description = 2;
+}
+
+message DeleteImageRequest {
+  int64 product_id = 1;
+  string title = 2;
+}
+
+message  GetBrandRequest {
+  int64 brand_id = 1;
+  int64 category_id = 2;
+}
+
+message GetBrandResponse {
+  BrandResponse rsp = 1;
+  repeated Brand brandInfo = 2;
+}
+
+message BrandRequest {
+  repeated Brand brands = 2;
+}
+
+message BrandResponse {
+  string status = 1;
+  string description = 2;
+}
+
+message DeleteBrandRequest {
+  int64 id = 1;
+  string name = 2;
+}
+
+message OperateProductsRequest {
+  int32 delete_flag = 1; // 0 代表修改， 1 代表删除
+  repeated Category category = 2;
+}
+
+message OperateProductsResponse {
+  string status = 1;
+  string description = 2;
+}
+
+message CategoryRequest {
+  int32 grade = 1;
+  int64 id = 2;
+  int64 parent_id = 3;
+  string name = 4;
+}
+
+message CategoryResponse {
+  string status = 1;
+  string description = 2;
+  repeated Category categorys = 3;
+}
+
+message Category {
+  string name = 1;
+  string seo_title = 2;
+  string seo_keywords = 3;
+  string seo_description = 4;
+  string tree_path = 5;
+  int32 grade = 6;
+  string  image = 7;
+  int64 parent_id = 8;
+}
+
+message InsertCategoryRequest {
+  repeated Category categorys = 1;
+  string creator = 2;
+}
+
+message InsertCategoryResponse {
+  string status = 1;
+  string description = 2;
+}
+
+message InsertProductsRequest {
+  string creator = 1;
+  repeated Product products = 2;
+}
+
+message InsertProductsResponse {
+  string status = 1;
+  string description = 2;
 }
 
 message Product {
   string id = 1;
   string name = 2;
-  string description = 3;
+  string introduction = 3;
   string picture = 4;
-  Money price_usd = 5;
+  int64 price = 5;
+  string sn = 6;
 
-  // Categories such as "clothing" or "kitchen" that can be used to look up
-  // other related products.
-  repeated string categories = 6;
+  string seo_title = 8;
+  string seo_keywords = 9;
+  string seo_description = 10;
+  int64 brand_id = 13;
+  int64 product_category_id = 14;
+  float score = 11;
+  repeated string attribute = 12;
 }
 
 message ListProductsResponse {
-  repeated Product products = 1;
+  string status = 1;
+  string description = 2;
+  repeated Product products = 3;
 }
 
 message GetProductRequest {
@@ -84,7 +219,9 @@ message SearchProductsRequest {
 }
 
 message SearchProductsResponse {
-  repeated Product results = 1;
+  string status = 1;
+  string description = 2;
+  repeated Product results = 3;
 }
 
 // ---------------Shipping Service----------
@@ -100,7 +237,7 @@ message GetQuoteRequest {
 }
 
 message GetQuoteResponse {
-  Money cost_usd = 1;
+  int64 cost_usd = 1;
 }
 
 message ShipOrderRequest {
@@ -113,23 +250,6 @@ message ShipOrderResponse {
 }
 
 
-// Represents an amount of money with its currency type.
-message Money {
-  // The 3-letter currency code defined in ISO 4217.
-  string currency_code = 1;
-
-  // The whole units of the amount.
-  // For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar.
-  int64 units = 2;
-
-  // Number of nano (10^-9) units of the amount.
-  // The value must be between -999,999,999 and +999,999,999 inclusive.
-  // If `units` is positive, `nanos` must be positive or zero.
-  // If `units` is zero, `nanos` can be positive, zero, or negative.
-  // If `units` is negative, `nanos` must be negative or zero.
-  // For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
-  int32 nanos = 3;
-}
 
 
 // -------------Payment service-----------------
@@ -146,7 +266,7 @@ message CreditCardInfo {
 }
 
 message ChargeRequest {
-  Money amount = 1;
+  int64 amount = 1;
   CreditCardInfo credit_card = 2;
 }
 
@@ -162,16 +282,10 @@ service EmailService {
 
 message OrderItem {
   CartItem item = 1;
-  Money cost = 2;
+  int64 cost = 2;
 }
 
-message OrderResult {
-  string   order_id = 1;
-  string   shipping_tracking_id = 2;
-  Money shipping_cost = 3;
-  string  shipping_address = 4;
-  repeated OrderItem items = 5;
-}
+
 
 message SendOrderConfirmationRequest {
   string email = 1;
@@ -183,35 +297,72 @@ message SendOrderConfirmationRequest {
 
 service OrderService {
   rpc PlaceOrder(PlaceOrderRequest) returns (PlaceOrderResponse) {}
-  rpc CheckOrderToUser(CheckOrderRequest) returns (OrderResult) {}
+  rpc CheckAllOrderToUser(CheckOrderRequest) returns (CheckOrderResponse) {}
+  rpc CheckOrderToUserByStatus(CheckOrderRequest) returns (CheckOrderResponse) {}
+  rpc CheckOrderToUserByDate(CheckOrderRequest) returns (CheckOrderResponse) {}
+  rpc ChangeStateOfOrder(ChangeOrderStateRequest) returns (ChangeOrderStateResponse) {}
+}
 
+message ChangeOrderStateRequest {
+  string   sn = 1;
+  int64   order_state = 2;
+}
+
+message ChangeOrderStateResponse {
+  string state = 1;
+  string description = 2;
 }
 
 message Time {
-  int64 day = 1;
-  int64 month = 2;
-  int64 year = 3;
+  string day = 1;
+  string month = 2;
+  string year = 3;
+}
+
+message OrderResult {
+  int64   order_id = 1;
+  string sn = 8;
+  string   shipping_tracking_id = 2;
+  int64 shipping_cost = 3;
+  string  shipping_address = 4;
+  repeated OrderItem items = 5;
+  string status = 6;
+  string descripiton = 7;
 }
 
 message CheckOrderRequest {
   int64 user_id = 1;
   Time  time_start = 2;
   Time  time_end = 3;
-  int64 state = 4;
+  int64 state = 4; // 0 1 2 3 4 代表待付款，代发货，待收货，待评价，退款/售后
+}
+
+message CheckOrderResponse {
+  repeated OrderResult resList = 1;
 }
 
 message PlaceOrderRequest {
-  string user_id = 1;
+  int64 user_id = 1;
 
   string address = 3;
 
-  string email = 5;
+  string phone = 5;
 
-  CreditCardInfo credit_card = 6;
+  string coupon_codeID = 6;
+
+  float coupon_discount = 7;
+
+  string  consignee = 8;
+
+
+  repeated OrderItem order_item_id = 16;
+
+
 }
 
+
 message PlaceOrderResponse {
-  repeated OrderResult order = 1;
+  OrderResult order = 1;
 }
 
 // ------------Ad service------------------
@@ -248,7 +399,9 @@ service UserService {
   rpc ChangeInfoToUser(User) returns (UserResponse) {}
   rpc UnregisterUser(User) returns (UserResponse) {}
   rpc LoginByMobile(User) returns (UserResponse) {}
+  rpc LoginByMobileCaptcha(User) returns (UserResponse) {}
   rpc CheckUserIsExisted(User) returns (UserResponse) {}
+  rpc SendCaptcha(User) returns (UserResponse) {}
 }
 
 message date {
@@ -278,10 +431,83 @@ message User {
   UserResponse response = 10;
   // gender
   int32 gender = 11;
+  string captcha = 12;
 }
 
 message UserResponse {
   // 100 成功， 500 是失败
   string status = 1;
   string description = 2;
+}
+
+// ------------Inventory service------------------
+
+service InventoryService {
+  rpc AdjustInventory(InventoryRequest) returns (InventoryResponse) {}
+  rpc InsertInventory(InsertInventoryRequest) returns (InsertInventoryResponse) {}
+  rpc MakeProductHot(MakeProductHotRequest) returns (MakeProductHotResponse) {}
+  rpc DecreaseInventoryToSpike(DecreaseInventoryToSpikeReq) returns (DecreaseInventoryToSpikeRsp){}
+  rpc IncreaseInventoryToSpike(IncreaseInventoryToSpikeReq) returns (IncreaseInventoryToSpikeRsp){}
+}
+
+message DecreaseInventoryToSpikeReq {
+  int64 product_id = 1;
+  int64 quantity = 2;
+}
+
+message DecreaseInventoryToSpikeRsp {
+  string status = 1;
+  string description = 2;
+}
+
+message IncreaseInventoryToSpikeReq {
+  int64 product_id = 1;
+  int64 quantity = 2;
+}
+
+message IncreaseInventoryToSpikeRsp {
+  string status = 1;
+  string description = 2;
+}
+
+message MakeProductHotRequest {
+  int64 product_id = 1;
+}
+
+message MakeProductHotResponse {
+  string status = 1;
+  string description = 2;
+}
+
+message InsertInventoryRequest {
+  int64 product_id = 1;
+  float price = 2;
+  int64 stock = 3;
+}
+
+message InsertInventoryResponse {
+  string status = 1;
+  string description = 2;
+}
+
+message InventoryRequestItem {
+  int64 product_id = 1;
+  int64 quantity = 2;
+}
+
+message InventoryRequest {
+  repeated InventoryRequestItem product_list = 1;
+  bool tag = 2;
+}
+
+message InventoryResponseItem {
+  bool is_operate_succeed = 1; //true是成功，false是失败
+  string description = 2;
+  int64 product_id = 3;
+}
+
+message InventoryResponse {
+  repeated InventoryResponseItem response_list = 1;
+  int64 status = 2; // 0 失败，1成功
+  string description = 3;
 }

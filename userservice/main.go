@@ -17,6 +17,7 @@ import (
 	"time"
 	"userservice/config"
 	_const "userservice/const"
+	"userservice/db/redisInit"
 	db "userservice/db/sqlc"
 	"userservice/handler"
 	pb "userservice/proto"
@@ -81,7 +82,7 @@ func main() {
 	if err != nil {
 		logger.Fatalf("db can not open, because of %s", err)
 	}
-
+	redisInit.RedisInit()
 	db.DB = db.NewStore(conn)
 
 	// Run service

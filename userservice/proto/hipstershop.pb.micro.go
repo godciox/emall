@@ -132,6 +132,20 @@ type ProductCatalogService interface {
 	ListProducts(ctx context.Context, in *Empty, opts ...client.CallOption) (*ListProductsResponse, error)
 	GetProduct(ctx context.Context, in *GetProductRequest, opts ...client.CallOption) (*Product, error)
 	SearchProducts(ctx context.Context, in *SearchProductsRequest, opts ...client.CallOption) (*SearchProductsResponse, error)
+	InsertProducts(ctx context.Context, in *InsertProductsRequest, opts ...client.CallOption) (*InsertProductsResponse, error)
+	OperateProducts(ctx context.Context, in *OperateProductsRequest, opts ...client.CallOption) (*OperateProductsResponse, error)
+	InsertCategory(ctx context.Context, in *InsertCategoryRequest, opts ...client.CallOption) (*InsertCategoryResponse, error)
+	GetCategory(ctx context.Context, in *CategoryRequest, opts ...client.CallOption) (*CategoryResponse, error)
+	DeleteCategory(ctx context.Context, in *CategoryRequest, opts ...client.CallOption) (*CategoryResponse, error)
+	ChangeCategory(ctx context.Context, in *InsertCategoryRequest, opts ...client.CallOption) (*InsertCategoryRequest, error)
+	GetProductImage(ctx context.Context, in *GetImageRequest, opts ...client.CallOption) (*GetImageResponse, error)
+	InsertProductImage(ctx context.Context, in *ImageRequest, opts ...client.CallOption) (*ImageResponse, error)
+	ChangeProductImage(ctx context.Context, in *ImageRequest, opts ...client.CallOption) (*ImageResponse, error)
+	DeleteProductImage(ctx context.Context, in *DeleteImageRequest, opts ...client.CallOption) (*ImageResponse, error)
+	GetBrand(ctx context.Context, in *GetBrandRequest, opts ...client.CallOption) (*GetBrandResponse, error)
+	InsertBrand(ctx context.Context, in *BrandRequest, opts ...client.CallOption) (*BrandResponse, error)
+	ChangeBrand(ctx context.Context, in *BrandRequest, opts ...client.CallOption) (*BrandRequest, error)
+	DeleteBrand(ctx context.Context, in *DeleteBrandRequest, opts ...client.CallOption) (*BrandResponse, error)
 }
 
 type productCatalogService struct {
@@ -176,12 +190,166 @@ func (c *productCatalogService) SearchProducts(ctx context.Context, in *SearchPr
 	return out, nil
 }
 
+func (c *productCatalogService) InsertProducts(ctx context.Context, in *InsertProductsRequest, opts ...client.CallOption) (*InsertProductsResponse, error) {
+	req := c.c.NewRequest(c.name, "ProductCatalogService.InsertProducts", in)
+	out := new(InsertProductsResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productCatalogService) OperateProducts(ctx context.Context, in *OperateProductsRequest, opts ...client.CallOption) (*OperateProductsResponse, error) {
+	req := c.c.NewRequest(c.name, "ProductCatalogService.OperateProducts", in)
+	out := new(OperateProductsResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productCatalogService) InsertCategory(ctx context.Context, in *InsertCategoryRequest, opts ...client.CallOption) (*InsertCategoryResponse, error) {
+	req := c.c.NewRequest(c.name, "ProductCatalogService.InsertCategory", in)
+	out := new(InsertCategoryResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productCatalogService) GetCategory(ctx context.Context, in *CategoryRequest, opts ...client.CallOption) (*CategoryResponse, error) {
+	req := c.c.NewRequest(c.name, "ProductCatalogService.GetCategory", in)
+	out := new(CategoryResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productCatalogService) DeleteCategory(ctx context.Context, in *CategoryRequest, opts ...client.CallOption) (*CategoryResponse, error) {
+	req := c.c.NewRequest(c.name, "ProductCatalogService.DeleteCategory", in)
+	out := new(CategoryResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productCatalogService) ChangeCategory(ctx context.Context, in *InsertCategoryRequest, opts ...client.CallOption) (*InsertCategoryRequest, error) {
+	req := c.c.NewRequest(c.name, "ProductCatalogService.ChangeCategory", in)
+	out := new(InsertCategoryRequest)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productCatalogService) GetProductImage(ctx context.Context, in *GetImageRequest, opts ...client.CallOption) (*GetImageResponse, error) {
+	req := c.c.NewRequest(c.name, "ProductCatalogService.GetProductImage", in)
+	out := new(GetImageResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productCatalogService) InsertProductImage(ctx context.Context, in *ImageRequest, opts ...client.CallOption) (*ImageResponse, error) {
+	req := c.c.NewRequest(c.name, "ProductCatalogService.InsertProductImage", in)
+	out := new(ImageResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productCatalogService) ChangeProductImage(ctx context.Context, in *ImageRequest, opts ...client.CallOption) (*ImageResponse, error) {
+	req := c.c.NewRequest(c.name, "ProductCatalogService.ChangeProductImage", in)
+	out := new(ImageResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productCatalogService) DeleteProductImage(ctx context.Context, in *DeleteImageRequest, opts ...client.CallOption) (*ImageResponse, error) {
+	req := c.c.NewRequest(c.name, "ProductCatalogService.DeleteProductImage", in)
+	out := new(ImageResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productCatalogService) GetBrand(ctx context.Context, in *GetBrandRequest, opts ...client.CallOption) (*GetBrandResponse, error) {
+	req := c.c.NewRequest(c.name, "ProductCatalogService.GetBrand", in)
+	out := new(GetBrandResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productCatalogService) InsertBrand(ctx context.Context, in *BrandRequest, opts ...client.CallOption) (*BrandResponse, error) {
+	req := c.c.NewRequest(c.name, "ProductCatalogService.InsertBrand", in)
+	out := new(BrandResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productCatalogService) ChangeBrand(ctx context.Context, in *BrandRequest, opts ...client.CallOption) (*BrandRequest, error) {
+	req := c.c.NewRequest(c.name, "ProductCatalogService.ChangeBrand", in)
+	out := new(BrandRequest)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productCatalogService) DeleteBrand(ctx context.Context, in *DeleteBrandRequest, opts ...client.CallOption) (*BrandResponse, error) {
+	req := c.c.NewRequest(c.name, "ProductCatalogService.DeleteBrand", in)
+	out := new(BrandResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for ProductCatalogService service
 
 type ProductCatalogServiceHandler interface {
 	ListProducts(context.Context, *Empty, *ListProductsResponse) error
 	GetProduct(context.Context, *GetProductRequest, *Product) error
 	SearchProducts(context.Context, *SearchProductsRequest, *SearchProductsResponse) error
+	InsertProducts(context.Context, *InsertProductsRequest, *InsertProductsResponse) error
+	OperateProducts(context.Context, *OperateProductsRequest, *OperateProductsResponse) error
+	InsertCategory(context.Context, *InsertCategoryRequest, *InsertCategoryResponse) error
+	GetCategory(context.Context, *CategoryRequest, *CategoryResponse) error
+	DeleteCategory(context.Context, *CategoryRequest, *CategoryResponse) error
+	ChangeCategory(context.Context, *InsertCategoryRequest, *InsertCategoryRequest) error
+	GetProductImage(context.Context, *GetImageRequest, *GetImageResponse) error
+	InsertProductImage(context.Context, *ImageRequest, *ImageResponse) error
+	ChangeProductImage(context.Context, *ImageRequest, *ImageResponse) error
+	DeleteProductImage(context.Context, *DeleteImageRequest, *ImageResponse) error
+	GetBrand(context.Context, *GetBrandRequest, *GetBrandResponse) error
+	InsertBrand(context.Context, *BrandRequest, *BrandResponse) error
+	ChangeBrand(context.Context, *BrandRequest, *BrandRequest) error
+	DeleteBrand(context.Context, *DeleteBrandRequest, *BrandResponse) error
 }
 
 func RegisterProductCatalogServiceHandler(s server.Server, hdlr ProductCatalogServiceHandler, opts ...server.HandlerOption) error {
@@ -189,6 +357,20 @@ func RegisterProductCatalogServiceHandler(s server.Server, hdlr ProductCatalogSe
 		ListProducts(ctx context.Context, in *Empty, out *ListProductsResponse) error
 		GetProduct(ctx context.Context, in *GetProductRequest, out *Product) error
 		SearchProducts(ctx context.Context, in *SearchProductsRequest, out *SearchProductsResponse) error
+		InsertProducts(ctx context.Context, in *InsertProductsRequest, out *InsertProductsResponse) error
+		OperateProducts(ctx context.Context, in *OperateProductsRequest, out *OperateProductsResponse) error
+		InsertCategory(ctx context.Context, in *InsertCategoryRequest, out *InsertCategoryResponse) error
+		GetCategory(ctx context.Context, in *CategoryRequest, out *CategoryResponse) error
+		DeleteCategory(ctx context.Context, in *CategoryRequest, out *CategoryResponse) error
+		ChangeCategory(ctx context.Context, in *InsertCategoryRequest, out *InsertCategoryRequest) error
+		GetProductImage(ctx context.Context, in *GetImageRequest, out *GetImageResponse) error
+		InsertProductImage(ctx context.Context, in *ImageRequest, out *ImageResponse) error
+		ChangeProductImage(ctx context.Context, in *ImageRequest, out *ImageResponse) error
+		DeleteProductImage(ctx context.Context, in *DeleteImageRequest, out *ImageResponse) error
+		GetBrand(ctx context.Context, in *GetBrandRequest, out *GetBrandResponse) error
+		InsertBrand(ctx context.Context, in *BrandRequest, out *BrandResponse) error
+		ChangeBrand(ctx context.Context, in *BrandRequest, out *BrandRequest) error
+		DeleteBrand(ctx context.Context, in *DeleteBrandRequest, out *BrandResponse) error
 	}
 	type ProductCatalogService struct {
 		productCatalogService
@@ -211,6 +393,62 @@ func (h *productCatalogServiceHandler) GetProduct(ctx context.Context, in *GetPr
 
 func (h *productCatalogServiceHandler) SearchProducts(ctx context.Context, in *SearchProductsRequest, out *SearchProductsResponse) error {
 	return h.ProductCatalogServiceHandler.SearchProducts(ctx, in, out)
+}
+
+func (h *productCatalogServiceHandler) InsertProducts(ctx context.Context, in *InsertProductsRequest, out *InsertProductsResponse) error {
+	return h.ProductCatalogServiceHandler.InsertProducts(ctx, in, out)
+}
+
+func (h *productCatalogServiceHandler) OperateProducts(ctx context.Context, in *OperateProductsRequest, out *OperateProductsResponse) error {
+	return h.ProductCatalogServiceHandler.OperateProducts(ctx, in, out)
+}
+
+func (h *productCatalogServiceHandler) InsertCategory(ctx context.Context, in *InsertCategoryRequest, out *InsertCategoryResponse) error {
+	return h.ProductCatalogServiceHandler.InsertCategory(ctx, in, out)
+}
+
+func (h *productCatalogServiceHandler) GetCategory(ctx context.Context, in *CategoryRequest, out *CategoryResponse) error {
+	return h.ProductCatalogServiceHandler.GetCategory(ctx, in, out)
+}
+
+func (h *productCatalogServiceHandler) DeleteCategory(ctx context.Context, in *CategoryRequest, out *CategoryResponse) error {
+	return h.ProductCatalogServiceHandler.DeleteCategory(ctx, in, out)
+}
+
+func (h *productCatalogServiceHandler) ChangeCategory(ctx context.Context, in *InsertCategoryRequest, out *InsertCategoryRequest) error {
+	return h.ProductCatalogServiceHandler.ChangeCategory(ctx, in, out)
+}
+
+func (h *productCatalogServiceHandler) GetProductImage(ctx context.Context, in *GetImageRequest, out *GetImageResponse) error {
+	return h.ProductCatalogServiceHandler.GetProductImage(ctx, in, out)
+}
+
+func (h *productCatalogServiceHandler) InsertProductImage(ctx context.Context, in *ImageRequest, out *ImageResponse) error {
+	return h.ProductCatalogServiceHandler.InsertProductImage(ctx, in, out)
+}
+
+func (h *productCatalogServiceHandler) ChangeProductImage(ctx context.Context, in *ImageRequest, out *ImageResponse) error {
+	return h.ProductCatalogServiceHandler.ChangeProductImage(ctx, in, out)
+}
+
+func (h *productCatalogServiceHandler) DeleteProductImage(ctx context.Context, in *DeleteImageRequest, out *ImageResponse) error {
+	return h.ProductCatalogServiceHandler.DeleteProductImage(ctx, in, out)
+}
+
+func (h *productCatalogServiceHandler) GetBrand(ctx context.Context, in *GetBrandRequest, out *GetBrandResponse) error {
+	return h.ProductCatalogServiceHandler.GetBrand(ctx, in, out)
+}
+
+func (h *productCatalogServiceHandler) InsertBrand(ctx context.Context, in *BrandRequest, out *BrandResponse) error {
+	return h.ProductCatalogServiceHandler.InsertBrand(ctx, in, out)
+}
+
+func (h *productCatalogServiceHandler) ChangeBrand(ctx context.Context, in *BrandRequest, out *BrandRequest) error {
+	return h.ProductCatalogServiceHandler.ChangeBrand(ctx, in, out)
+}
+
+func (h *productCatalogServiceHandler) DeleteBrand(ctx context.Context, in *DeleteBrandRequest, out *BrandResponse) error {
+	return h.ProductCatalogServiceHandler.DeleteBrand(ctx, in, out)
 }
 
 // Api Endpoints for ShippingService service
@@ -407,33 +645,36 @@ func (h *emailServiceHandler) SendOrderConfirmation(ctx context.Context, in *Sen
 	return h.EmailServiceHandler.SendOrderConfirmation(ctx, in, out)
 }
 
-// Api Endpoints for CheckoutService service
+// Api Endpoints for OrderService service
 
-func NewCheckoutServiceEndpoints() []*api.Endpoint {
+func NewOrderServiceEndpoints() []*api.Endpoint {
 	return []*api.Endpoint{}
 }
 
-// Client API for CheckoutService service
+// Client API for OrderService service
 
-type CheckoutService interface {
+type OrderService interface {
 	PlaceOrder(ctx context.Context, in *PlaceOrderRequest, opts ...client.CallOption) (*PlaceOrderResponse, error)
-	CheckOrderToUser(ctx context.Context, in *CheckOrderRequest, opts ...client.CallOption) (*OrderResult, error)
+	CheckAllOrderToUser(ctx context.Context, in *CheckOrderRequest, opts ...client.CallOption) (*CheckOrderResponse, error)
+	CheckOrderToUserByStatus(ctx context.Context, in *CheckOrderRequest, opts ...client.CallOption) (*CheckOrderResponse, error)
+	CheckOrderToUserByDate(ctx context.Context, in *CheckOrderRequest, opts ...client.CallOption) (*CheckOrderResponse, error)
+	ChangeStateOfOrder(ctx context.Context, in *ChangeOrderStateRequest, opts ...client.CallOption) (*ChangeOrderStateResponse, error)
 }
 
-type checkoutService struct {
+type orderService struct {
 	c    client.Client
 	name string
 }
 
-func NewCheckoutService(name string, c client.Client) CheckoutService {
-	return &checkoutService{
+func NewOrderService(name string, c client.Client) OrderService {
+	return &orderService{
 		c:    c,
 		name: name,
 	}
 }
 
-func (c *checkoutService) PlaceOrder(ctx context.Context, in *PlaceOrderRequest, opts ...client.CallOption) (*PlaceOrderResponse, error) {
-	req := c.c.NewRequest(c.name, "CheckoutService.PlaceOrder", in)
+func (c *orderService) PlaceOrder(ctx context.Context, in *PlaceOrderRequest, opts ...client.CallOption) (*PlaceOrderResponse, error) {
+	req := c.c.NewRequest(c.name, "OrderService.PlaceOrder", in)
 	out := new(PlaceOrderResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -442,9 +683,9 @@ func (c *checkoutService) PlaceOrder(ctx context.Context, in *PlaceOrderRequest,
 	return out, nil
 }
 
-func (c *checkoutService) CheckOrderToUser(ctx context.Context, in *CheckOrderRequest, opts ...client.CallOption) (*OrderResult, error) {
-	req := c.c.NewRequest(c.name, "CheckoutService.CheckOrderToUser", in)
-	out := new(OrderResult)
+func (c *orderService) CheckAllOrderToUser(ctx context.Context, in *CheckOrderRequest, opts ...client.CallOption) (*CheckOrderResponse, error) {
+	req := c.c.NewRequest(c.name, "OrderService.CheckAllOrderToUser", in)
+	out := new(CheckOrderResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -452,35 +693,83 @@ func (c *checkoutService) CheckOrderToUser(ctx context.Context, in *CheckOrderRe
 	return out, nil
 }
 
-// Server API for CheckoutService service
+func (c *orderService) CheckOrderToUserByStatus(ctx context.Context, in *CheckOrderRequest, opts ...client.CallOption) (*CheckOrderResponse, error) {
+	req := c.c.NewRequest(c.name, "OrderService.CheckOrderToUserByStatus", in)
+	out := new(CheckOrderResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
 
-type CheckoutServiceHandler interface {
+func (c *orderService) CheckOrderToUserByDate(ctx context.Context, in *CheckOrderRequest, opts ...client.CallOption) (*CheckOrderResponse, error) {
+	req := c.c.NewRequest(c.name, "OrderService.CheckOrderToUserByDate", in)
+	out := new(CheckOrderResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orderService) ChangeStateOfOrder(ctx context.Context, in *ChangeOrderStateRequest, opts ...client.CallOption) (*ChangeOrderStateResponse, error) {
+	req := c.c.NewRequest(c.name, "OrderService.ChangeStateOfOrder", in)
+	out := new(ChangeOrderStateResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for OrderService service
+
+type OrderServiceHandler interface {
 	PlaceOrder(context.Context, *PlaceOrderRequest, *PlaceOrderResponse) error
-	CheckOrderToUser(context.Context, *CheckOrderRequest, *OrderResult) error
+	CheckAllOrderToUser(context.Context, *CheckOrderRequest, *CheckOrderResponse) error
+	CheckOrderToUserByStatus(context.Context, *CheckOrderRequest, *CheckOrderResponse) error
+	CheckOrderToUserByDate(context.Context, *CheckOrderRequest, *CheckOrderResponse) error
+	ChangeStateOfOrder(context.Context, *ChangeOrderStateRequest, *ChangeOrderStateResponse) error
 }
 
-func RegisterCheckoutServiceHandler(s server.Server, hdlr CheckoutServiceHandler, opts ...server.HandlerOption) error {
-	type checkoutService interface {
+func RegisterOrderServiceHandler(s server.Server, hdlr OrderServiceHandler, opts ...server.HandlerOption) error {
+	type orderService interface {
 		PlaceOrder(ctx context.Context, in *PlaceOrderRequest, out *PlaceOrderResponse) error
-		CheckOrderToUser(ctx context.Context, in *CheckOrderRequest, out *OrderResult) error
+		CheckAllOrderToUser(ctx context.Context, in *CheckOrderRequest, out *CheckOrderResponse) error
+		CheckOrderToUserByStatus(ctx context.Context, in *CheckOrderRequest, out *CheckOrderResponse) error
+		CheckOrderToUserByDate(ctx context.Context, in *CheckOrderRequest, out *CheckOrderResponse) error
+		ChangeStateOfOrder(ctx context.Context, in *ChangeOrderStateRequest, out *ChangeOrderStateResponse) error
 	}
-	type CheckoutService struct {
-		checkoutService
+	type OrderService struct {
+		orderService
 	}
-	h := &checkoutServiceHandler{hdlr}
-	return s.Handle(s.NewHandler(&CheckoutService{h}, opts...))
+	h := &orderServiceHandler{hdlr}
+	return s.Handle(s.NewHandler(&OrderService{h}, opts...))
 }
 
-type checkoutServiceHandler struct {
-	CheckoutServiceHandler
+type orderServiceHandler struct {
+	OrderServiceHandler
 }
 
-func (h *checkoutServiceHandler) PlaceOrder(ctx context.Context, in *PlaceOrderRequest, out *PlaceOrderResponse) error {
-	return h.CheckoutServiceHandler.PlaceOrder(ctx, in, out)
+func (h *orderServiceHandler) PlaceOrder(ctx context.Context, in *PlaceOrderRequest, out *PlaceOrderResponse) error {
+	return h.OrderServiceHandler.PlaceOrder(ctx, in, out)
 }
 
-func (h *checkoutServiceHandler) CheckOrderToUser(ctx context.Context, in *CheckOrderRequest, out *OrderResult) error {
-	return h.CheckoutServiceHandler.CheckOrderToUser(ctx, in, out)
+func (h *orderServiceHandler) CheckAllOrderToUser(ctx context.Context, in *CheckOrderRequest, out *CheckOrderResponse) error {
+	return h.OrderServiceHandler.CheckAllOrderToUser(ctx, in, out)
+}
+
+func (h *orderServiceHandler) CheckOrderToUserByStatus(ctx context.Context, in *CheckOrderRequest, out *CheckOrderResponse) error {
+	return h.OrderServiceHandler.CheckOrderToUserByStatus(ctx, in, out)
+}
+
+func (h *orderServiceHandler) CheckOrderToUserByDate(ctx context.Context, in *CheckOrderRequest, out *CheckOrderResponse) error {
+	return h.OrderServiceHandler.CheckOrderToUserByDate(ctx, in, out)
+}
+
+func (h *orderServiceHandler) ChangeStateOfOrder(ctx context.Context, in *ChangeOrderStateRequest, out *ChangeOrderStateResponse) error {
+	return h.OrderServiceHandler.ChangeStateOfOrder(ctx, in, out)
 }
 
 // Api Endpoints for AdService service
@@ -559,7 +848,9 @@ type UserService interface {
 	ChangeInfoToUser(ctx context.Context, in *User, opts ...client.CallOption) (*UserResponse, error)
 	UnregisterUser(ctx context.Context, in *User, opts ...client.CallOption) (*UserResponse, error)
 	LoginByMobile(ctx context.Context, in *User, opts ...client.CallOption) (*UserResponse, error)
+	LoginByMobileCaptcha(ctx context.Context, in *User, opts ...client.CallOption) (*UserResponse, error)
 	CheckUserIsExisted(ctx context.Context, in *User, opts ...client.CallOption) (*UserResponse, error)
+	SendCaptcha(ctx context.Context, in *User, opts ...client.CallOption) (*UserResponse, error)
 }
 
 type userService struct {
@@ -654,8 +945,28 @@ func (c *userService) LoginByMobile(ctx context.Context, in *User, opts ...clien
 	return out, nil
 }
 
+func (c *userService) LoginByMobileCaptcha(ctx context.Context, in *User, opts ...client.CallOption) (*UserResponse, error) {
+	req := c.c.NewRequest(c.name, "UserService.LoginByMobileCaptcha", in)
+	out := new(UserResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userService) CheckUserIsExisted(ctx context.Context, in *User, opts ...client.CallOption) (*UserResponse, error) {
 	req := c.c.NewRequest(c.name, "UserService.CheckUserIsExisted", in)
+	out := new(UserResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userService) SendCaptcha(ctx context.Context, in *User, opts ...client.CallOption) (*UserResponse, error) {
+	req := c.c.NewRequest(c.name, "UserService.SendCaptcha", in)
 	out := new(UserResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -675,7 +986,9 @@ type UserServiceHandler interface {
 	ChangeInfoToUser(context.Context, *User, *UserResponse) error
 	UnregisterUser(context.Context, *User, *UserResponse) error
 	LoginByMobile(context.Context, *User, *UserResponse) error
+	LoginByMobileCaptcha(context.Context, *User, *UserResponse) error
 	CheckUserIsExisted(context.Context, *User, *UserResponse) error
+	SendCaptcha(context.Context, *User, *UserResponse) error
 }
 
 func RegisterUserServiceHandler(s server.Server, hdlr UserServiceHandler, opts ...server.HandlerOption) error {
@@ -688,7 +1001,9 @@ func RegisterUserServiceHandler(s server.Server, hdlr UserServiceHandler, opts .
 		ChangeInfoToUser(ctx context.Context, in *User, out *UserResponse) error
 		UnregisterUser(ctx context.Context, in *User, out *UserResponse) error
 		LoginByMobile(ctx context.Context, in *User, out *UserResponse) error
+		LoginByMobileCaptcha(ctx context.Context, in *User, out *UserResponse) error
 		CheckUserIsExisted(ctx context.Context, in *User, out *UserResponse) error
+		SendCaptcha(ctx context.Context, in *User, out *UserResponse) error
 	}
 	type UserService struct {
 		userService
@@ -733,6 +1048,141 @@ func (h *userServiceHandler) LoginByMobile(ctx context.Context, in *User, out *U
 	return h.UserServiceHandler.LoginByMobile(ctx, in, out)
 }
 
+func (h *userServiceHandler) LoginByMobileCaptcha(ctx context.Context, in *User, out *UserResponse) error {
+	return h.UserServiceHandler.LoginByMobileCaptcha(ctx, in, out)
+}
+
 func (h *userServiceHandler) CheckUserIsExisted(ctx context.Context, in *User, out *UserResponse) error {
 	return h.UserServiceHandler.CheckUserIsExisted(ctx, in, out)
+}
+
+func (h *userServiceHandler) SendCaptcha(ctx context.Context, in *User, out *UserResponse) error {
+	return h.UserServiceHandler.SendCaptcha(ctx, in, out)
+}
+
+// Api Endpoints for InventoryService service
+
+func NewInventoryServiceEndpoints() []*api.Endpoint {
+	return []*api.Endpoint{}
+}
+
+// Client API for InventoryService service
+
+type InventoryService interface {
+	AdjustInventory(ctx context.Context, in *InventoryRequest, opts ...client.CallOption) (*InventoryResponse, error)
+	InsertInventory(ctx context.Context, in *InsertInventoryRequest, opts ...client.CallOption) (*InsertInventoryResponse, error)
+	MakeProductHot(ctx context.Context, in *MakeProductHotRequest, opts ...client.CallOption) (*MakeProductHotResponse, error)
+	DecreaseInventoryToSpike(ctx context.Context, in *DecreaseInventoryToSpikeReq, opts ...client.CallOption) (*DecreaseInventoryToSpikeRsp, error)
+	IncreaseInventoryToSpike(ctx context.Context, in *IncreaseInventoryToSpikeReq, opts ...client.CallOption) (*IncreaseInventoryToSpikeRsp, error)
+}
+
+type inventoryService struct {
+	c    client.Client
+	name string
+}
+
+func NewInventoryService(name string, c client.Client) InventoryService {
+	return &inventoryService{
+		c:    c,
+		name: name,
+	}
+}
+
+func (c *inventoryService) AdjustInventory(ctx context.Context, in *InventoryRequest, opts ...client.CallOption) (*InventoryResponse, error) {
+	req := c.c.NewRequest(c.name, "InventoryService.AdjustInventory", in)
+	out := new(InventoryResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *inventoryService) InsertInventory(ctx context.Context, in *InsertInventoryRequest, opts ...client.CallOption) (*InsertInventoryResponse, error) {
+	req := c.c.NewRequest(c.name, "InventoryService.InsertInventory", in)
+	out := new(InsertInventoryResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *inventoryService) MakeProductHot(ctx context.Context, in *MakeProductHotRequest, opts ...client.CallOption) (*MakeProductHotResponse, error) {
+	req := c.c.NewRequest(c.name, "InventoryService.MakeProductHot", in)
+	out := new(MakeProductHotResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *inventoryService) DecreaseInventoryToSpike(ctx context.Context, in *DecreaseInventoryToSpikeReq, opts ...client.CallOption) (*DecreaseInventoryToSpikeRsp, error) {
+	req := c.c.NewRequest(c.name, "InventoryService.DecreaseInventoryToSpike", in)
+	out := new(DecreaseInventoryToSpikeRsp)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *inventoryService) IncreaseInventoryToSpike(ctx context.Context, in *IncreaseInventoryToSpikeReq, opts ...client.CallOption) (*IncreaseInventoryToSpikeRsp, error) {
+	req := c.c.NewRequest(c.name, "InventoryService.IncreaseInventoryToSpike", in)
+	out := new(IncreaseInventoryToSpikeRsp)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for InventoryService service
+
+type InventoryServiceHandler interface {
+	AdjustInventory(context.Context, *InventoryRequest, *InventoryResponse) error
+	InsertInventory(context.Context, *InsertInventoryRequest, *InsertInventoryResponse) error
+	MakeProductHot(context.Context, *MakeProductHotRequest, *MakeProductHotResponse) error
+	DecreaseInventoryToSpike(context.Context, *DecreaseInventoryToSpikeReq, *DecreaseInventoryToSpikeRsp) error
+	IncreaseInventoryToSpike(context.Context, *IncreaseInventoryToSpikeReq, *IncreaseInventoryToSpikeRsp) error
+}
+
+func RegisterInventoryServiceHandler(s server.Server, hdlr InventoryServiceHandler, opts ...server.HandlerOption) error {
+	type inventoryService interface {
+		AdjustInventory(ctx context.Context, in *InventoryRequest, out *InventoryResponse) error
+		InsertInventory(ctx context.Context, in *InsertInventoryRequest, out *InsertInventoryResponse) error
+		MakeProductHot(ctx context.Context, in *MakeProductHotRequest, out *MakeProductHotResponse) error
+		DecreaseInventoryToSpike(ctx context.Context, in *DecreaseInventoryToSpikeReq, out *DecreaseInventoryToSpikeRsp) error
+		IncreaseInventoryToSpike(ctx context.Context, in *IncreaseInventoryToSpikeReq, out *IncreaseInventoryToSpikeRsp) error
+	}
+	type InventoryService struct {
+		inventoryService
+	}
+	h := &inventoryServiceHandler{hdlr}
+	return s.Handle(s.NewHandler(&InventoryService{h}, opts...))
+}
+
+type inventoryServiceHandler struct {
+	InventoryServiceHandler
+}
+
+func (h *inventoryServiceHandler) AdjustInventory(ctx context.Context, in *InventoryRequest, out *InventoryResponse) error {
+	return h.InventoryServiceHandler.AdjustInventory(ctx, in, out)
+}
+
+func (h *inventoryServiceHandler) InsertInventory(ctx context.Context, in *InsertInventoryRequest, out *InsertInventoryResponse) error {
+	return h.InventoryServiceHandler.InsertInventory(ctx, in, out)
+}
+
+func (h *inventoryServiceHandler) MakeProductHot(ctx context.Context, in *MakeProductHotRequest, out *MakeProductHotResponse) error {
+	return h.InventoryServiceHandler.MakeProductHot(ctx, in, out)
+}
+
+func (h *inventoryServiceHandler) DecreaseInventoryToSpike(ctx context.Context, in *DecreaseInventoryToSpikeReq, out *DecreaseInventoryToSpikeRsp) error {
+	return h.InventoryServiceHandler.DecreaseInventoryToSpike(ctx, in, out)
+}
+
+func (h *inventoryServiceHandler) IncreaseInventoryToSpike(ctx context.Context, in *IncreaseInventoryToSpikeReq, out *IncreaseInventoryToSpikeRsp) error {
+	return h.InventoryServiceHandler.IncreaseInventoryToSpike(ctx, in, out)
 }

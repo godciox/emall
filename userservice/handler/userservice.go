@@ -5,14 +5,58 @@ import (
 	"database/sql"
 	"fmt"
 	"go-micro.dev/v4/logger"
+	"golang.org/x/crypto/bcrypt"
 	"time"
+	cache "userservice/db/redisInit"
 	db "userservice/db/sqlc"
 	pb "userservice/proto"
-
 	"userservice/utils"
 )
 
 type UserService struct {
+}
+
+func (u UserService) SendCaptcha(ctx context.Context, user *pb.User, response *pb.UserResponse) error {
+	_, err := db.DB.GetUserByPhone(ctx, sql.NullString{String: user.GetMobile(), Valid: true})
+	if err != nil {
+		utils.PackInfo(err,
+			"500",
+			fmt.Sprintf("操作失败，发送验证码失败,因为 %s", err),
+			response)
+		return nil
+	}
+	utils.SendMessage(user.Mobile)
+	return nil
+}
+
+func (u UserService) LoginByMobileCaptcha(ctx context.Context, user *pb.User, response *pb.UserResponse) error {
+	us, err := db.DB.GetUserByPhone(ctx, sql.NullString{String: user.GetMobile(), Valid: true})
+	if err != nil {
+		utils.PackInfo(err,
+			"500",
+			fmt.Sprintf("操作失败，查密码失败,因为 %s", err),
+			response)
+		return nil
+	}
+
+	//pwd := user.Password
+	valid, err := cache.IsValidCaptcha(us.Mobile.String, user.Captcha)
+	if !valid {
+		utils.PackInfo(err,
+			"500",
+			fmt.Sprintf("操作失败，验证码错误,因为 %s", err),
+			response)
+		return nil
+	}
+	db.DB.UpdateUserLoginDate(context.Background(), db.UpdateUserLoginDateParams{LoginDate: sql.NullTime{Time: time.Now(), Valid: true}, Mobile: sql.NullString{
+		String: user.Mobile,
+		Valid:  true,
+	}})
+	utils.PackInfo(err,
+		"100",
+		fmt.Sprintf("验证码正确"),
+		response)
+	return nil
 }
 
 func (u UserService) CheckUserIsExisted(ctx context.Context, user *pb.User, response *pb.UserResponse) error {
@@ -29,7 +73,6 @@ func (u UserService) CheckUserIsExisted(ctx context.Context, user *pb.User, resp
 
 func (u UserService) LoginByMobile(ctx context.Context, user *pb.User, response *pb.UserResponse) error {
 	us, err := db.DB.GetUserByPhone(ctx, sql.NullString{String: user.GetMobile(), Valid: true})
-	dBUserPassword := us.Password
 	if err != nil {
 		utils.PackInfo(err,
 			"500",
@@ -37,16 +80,20 @@ func (u UserService) LoginByMobile(ctx context.Context, user *pb.User, response 
 			response)
 		return nil
 	}
-	pwd := utils.HashAndSalt([]byte(user.Password))
+
 	//pwd := user.Password
-	if dBUserPassword != pwd {
+	err = bcrypt.CompareHashAndPassword([]byte(us.Password), []byte(user.Password))
+	if err != nil {
 		utils.PackInfo(err,
 			"500",
 			fmt.Sprintf("密码错误"),
 			response)
 		return nil
 	}
-	db.DB.UpdateUserLoginDate(context.Background(), db.UpdateUserLoginDateParams{LoginDate: sql.NullTime{Time: time.Now(), Valid: true}})
+	db.DB.UpdateUserLoginDate(context.Background(), db.UpdateUserLoginDateParams{LoginDate: sql.NullTime{Time: time.Now(), Valid: true}, Mobile: sql.NullString{
+		String: user.Mobile,
+		Valid:  true,
+	}})
 	utils.PackInfo(err,
 		"100",
 		fmt.Sprintf("密码正确"),

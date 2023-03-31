@@ -848,7 +848,9 @@ type UserService interface {
 	ChangeInfoToUser(ctx context.Context, in *User, opts ...client.CallOption) (*UserResponse, error)
 	UnregisterUser(ctx context.Context, in *User, opts ...client.CallOption) (*UserResponse, error)
 	LoginByMobile(ctx context.Context, in *User, opts ...client.CallOption) (*UserResponse, error)
+	LoginByMobileCaptcha(ctx context.Context, in *User, opts ...client.CallOption) (*UserResponse, error)
 	CheckUserIsExisted(ctx context.Context, in *User, opts ...client.CallOption) (*UserResponse, error)
+	SendCaptcha(ctx context.Context, in *User, opts ...client.CallOption) (*UserResponse, error)
 }
 
 type userService struct {
@@ -943,8 +945,28 @@ func (c *userService) LoginByMobile(ctx context.Context, in *User, opts ...clien
 	return out, nil
 }
 
+func (c *userService) LoginByMobileCaptcha(ctx context.Context, in *User, opts ...client.CallOption) (*UserResponse, error) {
+	req := c.c.NewRequest(c.name, "UserService.LoginByMobileCaptcha", in)
+	out := new(UserResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userService) CheckUserIsExisted(ctx context.Context, in *User, opts ...client.CallOption) (*UserResponse, error) {
 	req := c.c.NewRequest(c.name, "UserService.CheckUserIsExisted", in)
+	out := new(UserResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userService) SendCaptcha(ctx context.Context, in *User, opts ...client.CallOption) (*UserResponse, error) {
+	req := c.c.NewRequest(c.name, "UserService.SendCaptcha", in)
 	out := new(UserResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -964,7 +986,9 @@ type UserServiceHandler interface {
 	ChangeInfoToUser(context.Context, *User, *UserResponse) error
 	UnregisterUser(context.Context, *User, *UserResponse) error
 	LoginByMobile(context.Context, *User, *UserResponse) error
+	LoginByMobileCaptcha(context.Context, *User, *UserResponse) error
 	CheckUserIsExisted(context.Context, *User, *UserResponse) error
+	SendCaptcha(context.Context, *User, *UserResponse) error
 }
 
 func RegisterUserServiceHandler(s server.Server, hdlr UserServiceHandler, opts ...server.HandlerOption) error {
@@ -977,7 +1001,9 @@ func RegisterUserServiceHandler(s server.Server, hdlr UserServiceHandler, opts .
 		ChangeInfoToUser(ctx context.Context, in *User, out *UserResponse) error
 		UnregisterUser(ctx context.Context, in *User, out *UserResponse) error
 		LoginByMobile(ctx context.Context, in *User, out *UserResponse) error
+		LoginByMobileCaptcha(ctx context.Context, in *User, out *UserResponse) error
 		CheckUserIsExisted(ctx context.Context, in *User, out *UserResponse) error
+		SendCaptcha(ctx context.Context, in *User, out *UserResponse) error
 	}
 	type UserService struct {
 		userService
@@ -1022,8 +1048,16 @@ func (h *userServiceHandler) LoginByMobile(ctx context.Context, in *User, out *U
 	return h.UserServiceHandler.LoginByMobile(ctx, in, out)
 }
 
+func (h *userServiceHandler) LoginByMobileCaptcha(ctx context.Context, in *User, out *UserResponse) error {
+	return h.UserServiceHandler.LoginByMobileCaptcha(ctx, in, out)
+}
+
 func (h *userServiceHandler) CheckUserIsExisted(ctx context.Context, in *User, out *UserResponse) error {
 	return h.UserServiceHandler.CheckUserIsExisted(ctx, in, out)
+}
+
+func (h *userServiceHandler) SendCaptcha(ctx context.Context, in *User, out *UserResponse) error {
+	return h.UserServiceHandler.SendCaptcha(ctx, in, out)
 }
 
 // Api Endpoints for InventoryService service

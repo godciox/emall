@@ -1,4 +1,4 @@
-package httphandler
+package user
 
 import (
 	"context"
@@ -15,6 +15,11 @@ type UserLoginParams struct {
 	Mobile   string `form:"mobile"`
 	Password string `form:"password"`
 	UserName string `form:"username"`
+}
+
+type UserLoginByCaptcha struct {
+	Mobile  string `form:"mobile"`
+	Captcha string `form:"captcha"`
 }
 
 func LoginByPassword(ctx *context2.Context) {
@@ -43,7 +48,8 @@ func LoginByPassword(ctx *context2.Context) {
 		return
 	}
 	if user.Status == "500" {
-		ctx.ResponseWriter.WriteHeader(http.StatusInternalServerError)
+		ctx.ResponseWriter.WriteHeader(http.StatusUnauthorized)
+		ctx.WriteString(fmt.Errorf("出错信息：%s", user.Description).Error())
 		return
 	}
 
@@ -142,4 +148,58 @@ func LoginFilter(ctx *context2.Context) {
 		ctx.Abort(http.StatusBadRequest, "无该用户")
 		return
 	}
+}
+
+func LoginByCaptcha(ctx *context2.Context) {
+	var us UserLoginByCaptcha
+	if err := ctx.BindForm(&us); err != nil {
+		ctx.ResponseWriter.WriteHeader(http.StatusBadRequest)
+		ctx.WriteString("错误请求")
+		return
+	}
+	var user *proto.UserResponse
+	var err error
+	user, err = service.Svc.UserService.LoginByMobileCaptcha(context.Background(), &proto.User{
+		Mobile:  us.Mobile,
+		Captcha: us.Captcha,
+	})
+	if err != nil {
+		ctx.ResponseWriter.WriteHeader(http.StatusInternalServerError)
+		ctx.WriteString(fmt.Errorf("出错信息：%s", err).Error())
+		return
+	}
+	if user.Status == "500" {
+		ctx.ResponseWriter.WriteHeader(http.StatusUnauthorized)
+		ctx.WriteString(fmt.Errorf("出错信息：%s", user.Description).Error())
+		return
+	}
+
+	var tokenString string
+	tokenString = token.CreateToken(us.Mobile)
+
+	ctx.ResponseWriter.Header().Add("Authorization", tokenString)
+}
+
+func GetCaptcha(ctx *context2.Context) {
+	var us UserLoginByCaptcha
+
+	if err := ctx.BindForm(&us); err != nil {
+		ctx.ResponseWriter.WriteHeader(http.StatusBadRequest)
+		ctx.WriteString("错误请求")
+		return
+	}
+	rsp, err := service.Svc.UserService.SendCaptcha(context.Background(), &proto.User{
+		Mobile: us.Mobile,
+	})
+	if err != nil {
+		ctx.ResponseWriter.WriteHeader(http.StatusInternalServerError)
+		ctx.WriteString(fmt.Errorf("出错信息：%s", err).Error())
+		return
+	}
+	if rsp.Status == "500" {
+		ctx.ResponseWriter.WriteHeader(http.StatusUnauthorized)
+		ctx.WriteString(fmt.Errorf("出错信息：%s", rsp.Description).Error())
+		return
+	}
+	ctx.WriteString("成功发送")
 }

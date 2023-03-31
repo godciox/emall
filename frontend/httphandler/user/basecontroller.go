@@ -1,4 +1,4 @@
-package httphandler
+package user
 
 import "github.com/beego/beego/v2/server/web"
 
