@@ -20,10 +20,9 @@ option go_package = "./proto;hipstershop";
 // -----------------Cart service-----------------
 
 service CartService {
-  rpc AddItem(AddItemRequest) returns (CartResponse) {}
+  rpc AddItem(AddItemRequest) returns (Empty) {}
   rpc GetCart(GetCartRequest) returns (Cart) {}
-  rpc AdjustItem(AddItemRequest) returns (Cart) {}
-  rpc EmptyCart(EmptyCartRequest) returns (CartResponse) {}
+  rpc EmptyCart(EmptyCartRequest) returns (Empty) {}
 }
 
 message CartItem {
@@ -31,27 +30,20 @@ message CartItem {
   int64  quantity = 2;
 }
 
-message CartResponse {
-  string status = 1;
-  string response = 2;
-  int64 cart_id = 3;
-}
-
 message AddItemRequest {
-  int64 user_id = 1;
+  string user_id = 1;
   CartItem item = 2;
 }
 
 message EmptyCartRequest {
-  int64 user_id = 1;
+  string user_id = 1;
 }
 
 message GetCartRequest {
-  int64 user_id = 1;
+  string user_id = 1;
 }
 
 message Cart {
-  CartResponse cartRsp = 3;
   string user_id = 1;
   repeated CartItem items = 2;
 }
@@ -62,36 +54,23 @@ message Empty {}
 // ---------------Product Catalog----------------
 
 service ProductCatalogService {
-  rpc ListProductsByBrand(ListProductsRequest) returns (ListProductsResponse) {}
-  rpc ListProductsByProductCategory(ListProductsRequest) returns (ListProductsResponse) {}
-  rpc GetProduct(GetProductRequest) returns (GetProductResponse) {}
+  rpc ListProducts(Empty) returns (ListProductsResponse) {}
+  rpc GetProduct(GetProductRequest) returns (Product) {}
   rpc SearchProducts(SearchProductsRequest) returns (SearchProductsResponse) {}
   rpc InsertProducts(InsertProductsRequest) returns (InsertProductsResponse) {}
   rpc OperateProducts(OperateProductsRequest) returns (OperateProductsResponse) {}
   rpc InsertCategory(InsertCategoryRequest) returns (InsertCategoryResponse) {}
   rpc GetCategory(CategoryRequest) returns (CategoryResponse) {}
   rpc DeleteCategory(CategoryRequest) returns (CategoryResponse) {}
-  rpc ChangeCategory(InsertCategoryRequest) returns (InsertCategoryResponse) {}
+  rpc ChangeCategory(InsertCategoryRequest) returns (InsertCategoryRequest) {}
   rpc GetProductImage(GetImageRequest) returns (GetImageResponse) {}
   rpc InsertProductImage(ImageRequest) returns (ImageResponse) {}
   rpc ChangeProductImage(ImageRequest) returns (ImageResponse) {}
   rpc DeleteProductImage(DeleteImageRequest) returns (ImageResponse) {}
   rpc GetBrand(GetBrandRequest) returns (GetBrandResponse) {}
   rpc InsertBrand(BrandRequest) returns (BrandResponse) {}
-  rpc ChangeBrand(BrandRequest) returns (BrandResponse) {}
+  rpc ChangeBrand(BrandRequest) returns (BrandRequest) {}
   rpc DeleteBrand(DeleteBrandRequest) returns (BrandResponse) {}
-}
-
-message ListProductsRequest {
-  int64 category_id = 1;
-  int64 brand_id = 2;
-  int32 page = 3;
-}
-
-message ListProductsResponse {
-  string status = 1;
-  string description = 2;
-  repeated Product products = 3;
 }
 
 message ProductImage {
@@ -99,14 +78,12 @@ message ProductImage {
   int64 product_id = 2;
   string source_img = 3;
   string thumbnail = 4;
-  int64 id = 5;
 }
 
 message Brand {
   string name = 1;
   string logo_img_path = 2;
   int64  product_categories_id = 3;
-  int64 id = 4;
 }
 
 message  GetImageRequest {
@@ -119,7 +96,6 @@ message GetImageResponse {
 }
 
 message ImageRequest {
-  string creator = 1;
   repeated ProductImage images = 2;
 }
 
@@ -144,7 +120,6 @@ message GetBrandResponse {
 }
 
 message BrandRequest {
-  string creator = 1;
   repeated Brand brands = 2;
 }
 
@@ -160,7 +135,7 @@ message DeleteBrandRequest {
 
 message OperateProductsRequest {
   int32 delete_flag = 1; // 0 代表修改， 1 代表删除
-  repeated Product products = 2;
+  repeated Category category = 2;
 }
 
 message OperateProductsResponse {
@@ -173,7 +148,6 @@ message CategoryRequest {
   int64 id = 2;
   int64 parent_id = 3;
   string name = 4;
-  int32 page = 5;
 }
 
 message CategoryResponse {
@@ -191,7 +165,6 @@ message Category {
   int32 grade = 6;
   string  image = 7;
   int64 parent_id = 8;
-  int64 id = 9;
 }
 
 message InsertCategoryRequest {
@@ -219,7 +192,7 @@ message Product {
   string name = 2;
   string introduction = 3;
   string picture = 4;
-  float price = 5;
+  int64 price = 5;
   string sn = 6;
 
   string seo_title = 8;
@@ -231,15 +204,14 @@ message Product {
   repeated string attribute = 12;
 }
 
-
-message GetProductRequest {
-  int64 id = 1;
-}
-
-message GetProductResponse {
+message ListProductsResponse {
   string status = 1;
   string description = 2;
-  Product product = 3;
+  repeated Product products = 3;
+}
+
+message GetProductRequest {
+  string id = 1;
 }
 
 message SearchProductsRequest {
@@ -251,6 +223,7 @@ message SearchProductsResponse {
   string status = 1;
   string description = 2;
   repeated Product results = 3;
+  repeated bytes imgs = 4;
 }
 
 // ---------------Shipping Service----------
@@ -428,7 +401,9 @@ service UserService {
   rpc ChangeInfoToUser(User) returns (UserResponse) {}
   rpc UnregisterUser(User) returns (UserResponse) {}
   rpc LoginByMobile(User) returns (UserResponse) {}
+  rpc LoginByMobileCaptcha(User) returns (UserResponse) {}
   rpc CheckUserIsExisted(User) returns (UserResponse) {}
+  rpc SendCaptcha(User) returns (UserResponse) {}
 }
 
 message date {
@@ -458,6 +433,7 @@ message User {
   UserResponse response = 10;
   // gender
   int32 gender = 11;
+  string captcha = 12;
 }
 
 message UserResponse {
@@ -471,6 +447,38 @@ message UserResponse {
 service InventoryService {
   rpc AdjustInventory(InventoryRequest) returns (InventoryResponse) {}
   rpc InsertInventory(InsertInventoryRequest) returns (InsertInventoryResponse) {}
+  rpc MakeProductHot(MakeProductHotRequest) returns (MakeProductHotResponse) {}
+  rpc DecreaseInventoryToSpike(DecreaseInventoryToSpikeReq) returns (DecreaseInventoryToSpikeRsp){}
+  rpc IncreaseInventoryToSpike(IncreaseInventoryToSpikeReq) returns (IncreaseInventoryToSpikeRsp){}
+}
+
+message DecreaseInventoryToSpikeReq {
+  int64 product_id = 1;
+  int64 quantity = 2;
+}
+
+message DecreaseInventoryToSpikeRsp {
+  string status = 1;
+  string description = 2;
+}
+
+message IncreaseInventoryToSpikeReq {
+  int64 product_id = 1;
+  int64 quantity = 2;
+}
+
+message IncreaseInventoryToSpikeRsp {
+  string status = 1;
+  string description = 2;
+}
+
+message MakeProductHotRequest {
+  int64 product_id = 1;
+}
+
+message MakeProductHotResponse {
+  string status = 1;
+  string description = 2;
 }
 
 message InsertInventoryRequest {

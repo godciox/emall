@@ -14,6 +14,7 @@ func (c *BaseController) ApiJsonReturn(msg string, code int, data interface{}) {
 	JsonReturn.Msg = msg
 	JsonReturn.Code = code
 	JsonReturn.Data = data
+	c.Ctx.ResponseWriter.WriteHeader(code)
 	c.Data["json"] = JsonReturn //将结构体数组根据tag解析为json
 	c.ServeJSON()               //对json进行序列化输出
 	c.StopRun()                 //终止执行逻辑

@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"database/sql"
+	"io/ioutil"
 	db "productservice/db/sqlc"
 	pb "productservice/proto"
 	"productservice/utils"
@@ -361,7 +362,13 @@ func (p ProductService) SearchProducts(ctx context.Context, request *pb.SearchPr
 	for _, item := range rs {
 		cur := new(pb.Product)
 		utils.ProductChange(item, cur)
+		fileBytes, err := ioutil.ReadFile("./img/" + item.Image.String)
 		response.Results = append(response.Results, cur)
+		if err != nil {
+			response.Imgs = append(response.Imgs, fileBytes)
+		} else {
+			response.Imgs = append(response.Imgs, []byte{})
+		}
 	}
 	response.Status = "100"
 	response.Description = "SearchProducts成功"

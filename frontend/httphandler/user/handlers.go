@@ -127,7 +127,7 @@ func GetUserInfo(ctx *context2.Context) {
 func LoginFilter(ctx *context2.Context) {
 	tokenS := ctx.Request.Header["Authorization"]
 
-	if ctx.Request.URL.Path == "/user/register" || ctx.Request.URL.Path == "/user/login" {
+	if isLoginPath(ctx.Request.URL.Path) {
 		return
 	}
 
@@ -137,7 +137,7 @@ func LoginFilter(ctx *context2.Context) {
 	}
 
 	mobile, isPass := token.CheckToken(tokenS[0])
-	if isPass {
+	if !isPass {
 		ctx.Abort(http.StatusUnauthorized, "认证过期")
 		return
 	}
@@ -148,6 +148,13 @@ func LoginFilter(ctx *context2.Context) {
 		ctx.Abort(http.StatusBadRequest, "无该用户")
 		return
 	}
+}
+
+func isLoginPath(path string) bool {
+	if _, ok := pathMap[path]; ok {
+		return true
+	}
+	return false
 }
 
 func LoginByCaptcha(ctx *context2.Context) {

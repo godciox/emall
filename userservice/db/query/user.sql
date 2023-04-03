@@ -5,27 +5,27 @@ VALUES (?, ?, ?, ?, ?, ?, ?);
 -- name: GetUserPassword :one
 SELECT password
 FROM users
-WHERE id = ? LIMIT 1;
+WHERE id = ?;
 
 -- name: GetUserByID :one
 SELECT *
 FROM users
-WHERE id = ? LIMIT 1;
+WHERE id = ?;
 
 -- name: GetUserByName :one
 SELECT *
 FROM users
-WHERE username = ? LIMIT 1;
+WHERE username = ?
 
 -- name: GetUserByPhone :one
 SELECT *
 FROM users
-WHERE mobile = ? LIMIT 1;
+WHERE mobile = ?;
 
 -- name: GetUserPhoneByID :one
 SELECT mobile
 FROM users
-WHERE id = ? LIMIT 1;
+WHERE id = ?;
 
 -- name: UpdateUserLoginDate :exec
 UPDATE users

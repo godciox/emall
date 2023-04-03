@@ -216,12 +216,14 @@ message GetProductRequest {
 
 message SearchProductsRequest {
   string query = 1;
+  int32 page = 2;
 }
 
 message SearchProductsResponse {
   string status = 1;
   string description = 2;
   repeated Product results = 3;
+  repeated bytes imgs = 4;
 }
 
 // ---------------Shipping Service----------

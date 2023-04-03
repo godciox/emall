@@ -34,7 +34,7 @@ func CheckToken(tokenString string) (string, bool) {
 	exp := int64(claims["exp"].(float64))
 	//begin := time.Unix(iat, 0)
 	expT := time.Unix(exp, 0)
-	if time.Now().Before(expT) {
+	if !time.Now().Before(expT) {
 		return "", false
 	}
 	return Phone, true

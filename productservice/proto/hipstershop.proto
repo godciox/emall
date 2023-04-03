@@ -74,6 +74,7 @@ service ProductCatalogService {
   rpc DeleteBrand(DeleteBrandRequest) returns (BrandResponse) {}
 }
 
+
 message ListProductsRequest {
   int64 category_id = 1;
   int64 brand_id = 2;
@@ -243,6 +244,7 @@ message SearchProductsResponse {
   string status = 1;
   string description = 2;
   repeated Product results = 3;
+  repeated bytes imgs = 4;
 }
 
 // ---------------Shipping Service----------

@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/beego/beego/v2 v2.0.7
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-micro/plugins/v4/client/grpc v1.1.0
 	github.com/go-micro/plugins/v4/registry/consul v1.2.0
 	github.com/go-micro/plugins/v4/registry/kubernetes v1.1.0
@@ -27,8 +28,6 @@ require (
 	github.com/bitly/go-simplejson v0.5.0 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
-	github.com/dchest/captcha v1.0.0 // indirect
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/emirpasic/gods v1.12.0 // indirect
 	github.com/evanphx/json-patch/v5 v5.5.0 // indirect
 	github.com/fatih/color v1.9.0 // indirect

@@ -216,12 +216,14 @@ message GetProductRequest {
 
 message SearchProductsRequest {
   string query = 1;
+  int32 page = 2;
 }
 
 message SearchProductsResponse {
   string status = 1;
   string description = 2;
   repeated Product results = 3;
+  repeated bytes imgs = 4;
 }
 
 // ---------------Shipping Service----------
@@ -301,22 +303,6 @@ service OrderService {
   rpc CheckOrderToUserByStatus(CheckOrderRequest) returns (CheckOrderResponse) {}
   rpc CheckOrderToUserByDate(CheckOrderRequest) returns (CheckOrderResponse) {}
   rpc ChangeStateOfOrder(ChangeOrderStateRequest) returns (ChangeOrderStateResponse) {}
-  rpc SpikePlaceOrder(SpikePlaceOrderRequest) returns (SpikePlaceOrderResponse) {}
-}
-
-message SpikePlaceOrderRequest {
-    int64 product_id = 1;
-    int64 quantity = 2;
-    int64 user_id = 4;
-    string address = 3;
-    string phone = 5;
-    int64 cost = 6;
-    string consignee = 7;
-}
-
-message SpikePlaceOrderResponse {
-    string state = 1;
-    string description = 2;
 }
 
 message ChangeOrderStateRequest {
@@ -415,7 +401,9 @@ service UserService {
   rpc ChangeInfoToUser(User) returns (UserResponse) {}
   rpc UnregisterUser(User) returns (UserResponse) {}
   rpc LoginByMobile(User) returns (UserResponse) {}
+  rpc LoginByMobileCaptcha(User) returns (UserResponse) {}
   rpc CheckUserIsExisted(User) returns (UserResponse) {}
+  rpc SendCaptcha(User) returns (UserResponse) {}
 }
 
 message date {
@@ -445,6 +433,7 @@ message User {
   UserResponse response = 10;
   // gender
   int32 gender = 11;
+  string captcha = 12;
 }
 
 message UserResponse {
